@@ -3,10 +3,12 @@ import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:solh_ai_app/helper/shared_prefrences/shared_prefrences_singleton.dart';
 import 'package:solh_ai_app/modules/homescreen.dart';
 import 'package:solh_ai_app/services/graphql_client.dart';
+import 'package:stac/stac.dart';
 
 Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   await GraphqlClient.I.init();
+   await Stac.initialize();
 
   await Prefs.init();
   runApp(const MyApp());

@@ -3,6 +3,7 @@ import 'package:nanoid/non_secure.dart';
 import 'package:solh_ai_app/chat/chat_screen.dart';
 import 'package:solh_ai_app/helper/shared_prefrences/shared_prefrences_singleton.dart';
 import 'package:solh_ai_app/helper/shared_prefrences/user_id.dart';
+import 'package:solh_ai_app/test/test.dart';
 
 class Homescreen extends StatefulWidget {
   const Homescreen({super.key});
@@ -60,6 +61,23 @@ class _HomescreenState extends State<Homescreen> {
                     Icon(Icons.chat),
                     SizedBox(width: 10),
                     Text("Start chating"),
+                  ],
+                ),
+              ),
+            ),
+                InkWell(
+              onTap: () {
+                Navigator.of(
+                  context,
+                ).push(MaterialPageRoute(builder: (context) => TestWidget()));
+              },
+              child: Card(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(Icons.chat),
+                    SizedBox(width: 10),
+                    Text("sample test"),
                   ],
                 ),
               ),

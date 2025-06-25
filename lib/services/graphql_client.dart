@@ -17,7 +17,7 @@ class GraphqlClient {
     );
 
     final HttpLink httpLink = HttpLink(
-      'https://ai.solhapp.com/query',
+      'http://192.168.1.23:3000/query',
       httpClient: httpClient,
     );
 

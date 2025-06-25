@@ -1,14 +1,15 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:graphql_flutter/graphql_flutter.dart';
 import 'package:markdown_widget/config/all.dart';
 import 'package:markdown_widget/widget/all.dart';
 import 'package:solh_ai_app/chat/services/chat_services.dart';
 import 'package:solh_ai_app/helper/shared_prefrences/user_id.dart';
 import 'package:solh_ai_app/services/graphql_client.dart';
 import 'package:flutter_highlight/themes/a11y-light.dart';
+import 'package:stac/stac.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -43,7 +44,6 @@ class _ChatScreenState extends State<ChatScreen> {
   ChatServices chatServices = ChatServices();
 
   Future<String> getAIResponse() async {
-    // TODO: Replace this with your GraphQL API call
 
     String? res = await chatServices.sendInitialMessage(
       GraphqlClient.I.client.value,
@@ -55,7 +55,6 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
 
     getPreviousChat();
     super.initState();
@@ -249,6 +248,7 @@ class MessageTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var mess = message.author == 'user'?message.body :jsonDecode(message.body);
     Size size = MediaQuery.of(context).size;
     final isUser = message.author == 'user';
     return Align(
@@ -275,35 +275,56 @@ class MessageTile extends StatelessWidget {
                   message.body,
                   style: TextStyle(color: Colors.black),
                 )
-                : MarkdownWidget(
-                  data: message.body,
-                  shrinkWrap: true,
-
-                  config: MarkdownConfig(
-                    configs: [
-                      PConfig(
-                        textStyle: TextStyle(
-                          color: isUser ? Colors.white : Colors.black,
-                          // Ensure text is visible in light theme for AI messages
+                : Column(
+                  children: [
+                    Column(
+                      children: [
+                        MarkdownWidget(
+                          data: mess["text"],
+                          shrinkWrap: true,
+                        
+                          config: MarkdownConfig(
+                            configs: [
+                              PConfig(
+                                textStyle: TextStyle(
+                                  color: isUser ? Colors.white : Colors.black,
+                                  // Ensure text is visible in light theme for AI messages
+                                ),
+                              ),
+                        
+                              PreConfig(
+                                theme: a11yLightTheme, // Code block theme
+                                textStyle: const TextStyle(
+                                  color: Colors.black,
+                                ), // Text color for code blocks
+                              ),
+                        
+                              CodeConfig(
+                                style: const TextStyle(
+                                  color: Colors.black,
+                                ), // Inline code text color
+                              ),
+                              // Add other configs as needed, e.g., H1Config, H2Config, LinkConfig
+                            ],
+                          ),
                         ),
-                      ),
-                      PreConfig(
-                        theme: a11yLightTheme, // Code block theme
-                        textStyle: const TextStyle(
-                          color: Colors.black,
-                        ), // Text color for code blocks
-                      ),
-
-                      CodeConfig(
-                        style: const TextStyle(
-                          color: Colors.black,
-                        ), // Inline code text color
-                      ),
-                      // Add other configs as needed, e.g., H1Config, H2Config, LinkConfig
-                    ],
-                  ),
+                        getRecommendation( mess["recommendation"])
+                      ],
+                    ),
+                  ],
                 ),
       ),
     );
   }
+}
+
+
+Widget getRecommendation(List recomm){
+  return ListView.separated(shrinkWrap: true,physics: NeverScrollableScrollPhysics() ,itemCount: recomm.length,separatorBuilder: (context, index) {
+   return SizedBox(height: 10,);
+  }, itemBuilder: (context, index) {
+log(recomm[index]["content"].toString(),name: "list");
+final content = json.decode(recomm[index]["content"]);
+    return Stac.fromJson(content,context);
+  },);
 }
