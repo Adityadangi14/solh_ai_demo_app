@@ -323,6 +323,9 @@ Widget getRecommendation(List recomm){
   return ListView.separated(shrinkWrap: true,physics: NeverScrollableScrollPhysics() ,itemCount: recomm.length,separatorBuilder: (context, index) {
    return SizedBox(height: 10,);
   }, itemBuilder: (context, index) {
+    if (recomm[index]["content"]==null){
+      return SizedBox();
+    }
 log(recomm[index]["content"].toString(),name: "list");
 final content = json.decode(recomm[index]["content"]);
     return Stac.fromJson(content,context);

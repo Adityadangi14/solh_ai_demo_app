@@ -65,23 +65,23 @@ class _HomescreenState extends State<Homescreen> {
                 ),
               ),
             ),
-                InkWell(
-              onTap: () {
-                Navigator.of(
-                  context,
-                ).push(MaterialPageRoute(builder: (context) => TestWidget()));
-              },
-              child: Card(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.chat),
-                    SizedBox(width: 10),
-                    Text("sample test"),
-                  ],
-                ),
-              ),
-            ),
+            //     InkWell(
+            //   onTap: () {
+            //     Navigator.of(
+            //       context,
+            //     ).push(MaterialPageRoute(builder: (context) => TestWidget()));
+            //   },
+            //   child: Card(
+            //     child: Row(
+            //       mainAxisAlignment: MainAxisAlignment.center,
+            //       children: [
+            //         Icon(Icons.chat),
+            //         SizedBox(width: 10),
+            //         Text("sample test"),
+            //       ],
+            //     ),
+            //   ),
+            // ),
             Spacer(),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,

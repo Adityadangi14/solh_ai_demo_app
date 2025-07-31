@@ -41,6 +41,7 @@ dependencies:
   flutter_highlight: ^0.7.0
   flutter_eval: ^0.7.8
   stac: ^0.11.0
+  http: ^1.4.0
 
 dev_dependencies:
   flutter_test:
